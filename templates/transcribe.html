@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="my-4">Manuscript: {{ shelfmark }}</h2>
+    {% for index, row in manuscript_data.iterrows() %}
+    <form method="POST" action="{{ url_for('check_transcription') }}" class="form-action">
+        <div class="card my-2">
+            <div class="card-body">
+                <img src="data:image/png;base64,{{ row['im'] }}" class="img-fluid" alt="Manuscript line">
+                <div class="form-group">
+                    <label for="transcription">Transcription</label>
+                    <input type="text"   name="transcription" value="" class="form-control" />
+                    <input type="hidden" name="groundtruth" value="{{ row['text'] }}">
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Check Transcriptions</button>
+    </form>
+    {% endfor %}
+
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.form-action').forEach((form) => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const params = new URLSearchParams();
+
+            for (const pair of formData) {
+                params.append(pair[0], pair[1]);
+            }
+
+            fetch('{{ url_for('check_transcription') }}', {
+                method: 'POST',
+                body: params
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.text();
+            })
+            .then(data => {
+                form.querySelector('.feedback').innerHTML = data;
+            })
+            .catch(error => {
+                form.querySelector('.feedback').innerHTML = '<p>An error occurred: ' + error.message + '</p>';
+            });
+        });
+    });
+    let keyboardCounter = 0;
+    async function createVirtualKeyboard(uri, textInput, rows, columns) {
+        // Fetch the JSON data from the provided URI
+        const response = await fetch(uri);
+        const data = await response.json();
+
+
+        // Increment the counter and create a unique keyboard ID
+        keyboardCounter++;
+        const keyboardId = `keyboard-${keyboardCounter}`;
+
+        // Create the keyboard container
+        const keyboardContainer = document.createElement('div');
+        keyboardContainer.id = keyboardId;
+        keyboardContainer.classList.add('keyboard-container');
+        keyboardContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+        keyboardContainer.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+
+        // Create the close button
+        const closeButton = document.createElement('div');
+        closeButton.classList.add('close-button');
+        closeButton.classList.add('key');
+        closeButton.textContent = '✖';
+        closeButton.addEventListener('click', () => {
+            keyboardContainer.style.display = 'none';
+        });
+        keyboardContainer.appendChild(closeButton);
+
+        // Iterate through each character in the JSON data
+        data.characters.forEach(characterData => {
+            const { character, row, column } = characterData;
+
+            // Create a key element
+            const key = document.createElement('a');
+            key.textContent = character;
+            key.classList.add('key');
+            key.href = '#';
+
+            // Position the key in the grid
+            key.style.gridRowStart = row + 1;
+            key.style.gridColumnStart = column + 1;
+
+            // Add click event to append the character to the text input
+            key.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent the default anchor behavior
+                textInput.value += character;
+            });
+
+            // Add the key to the keyboard container
+            keyboardContainer.appendChild(key);
+        });
+
+        textInput.addEventListener('focus', () => {
+            const rect = textInput.getBoundingClientRect();
+            keyboardContainer.style.top = `${rect.bottom + window.scrollY}px`;
+            keyboardContainer.style.left = `${rect.left + window.scrollX}px`;
+            keyboardContainer.style.display = 'grid';
+        });
+
+
+        const form = textInput.closest('form');
+        keyboardContainer.style.display = 'none';
+        form.appendChild(keyboardContainer);
+
+    }
+
+    // Example usage
+    document.querySelectorAll("input[type='text']").forEach((el) => {
+        createVirtualKeyboard(
+            '{{url_for("static", filename="keyboard.json")}}', 
+            el,
+            4,
+            13
+        );
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medieval Transcription App</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .keyboard-container {
+            display: grid;
+            gap: 5px; /* Optional: add some gap between keys */
+            border: 1px solid black; /* Optional: add a border for the keyboard */
+            padding: 10px; /* Optional: add some padding around the keyboard */
+        }
+        .key {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid gray; /* Optional: add a border to each key */
+            padding: 10px; /* Optional: add some padding inside each key */
+            font-size: 20px; /* Adjust the font size as needed */
+            text-decoration: none; /* Remove underline from links */
+            background-color: #f0f0f0; /* Light gray background for key appearance */
+            color: black; /* Black text color */
+            cursor: pointer; /* Change cursor to pointer to indicate clickable keys */
+            border-radius: 5px; /* Optional: add rounded corners for a key-like appearance */
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Optional: add a subtle shadow for a 3D effect */
+        }
+        .key:hover {
+            background-color: #e0e0e0; /* Slightly darker background on hover */
+        }
+        .close-button {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">Medieval Transcription Practice</h1>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+tqdm
+datasets
+pillow
+pandas
+#streamlit
+jiwer
