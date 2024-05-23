@@ -2,6 +2,7 @@
 
 {% block content %}
 <h2 class="my-4">Manuscript: {{ shelfmark }}</h2>
+    <p class="alert alert-info">Share this page with others: <a href="{{url_for('transcribe', mss=shelfmark, _external=True)}}">{{url_for('transcribe', mss=shelfmark, _external=True)}}</a></p>
     {% for index, row in manuscript_data.iterrows() %}
     <form method="POST" action="{{ url_for('check_transcription') }}" class="form-action">
         <div class="card my-2">
@@ -67,8 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const keyboardContainer = document.createElement('div');
         keyboardContainer.id = keyboardId;
         keyboardContainer.classList.add('keyboard-container');
-        keyboardContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-        keyboardContainer.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+        // keyboardContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+        // keyboardContainer.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
 
         // Create the close button
         const closeButton = document.createElement('div');

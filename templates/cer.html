@@ -1,6 +1,8 @@
-<dl>
-	<dt>Character Error Rate</dt>
-	<dd>{{"%0.2f" % cer|float}}%</dd>
-	<dt>Diff</dt>
-	<dd>{{diff | safe}}</dd>
+<dl class="row">
+	<dt class="col-md-4">Character Error Rate</dt>
+	<dd class="col-md-8">{{"%0.2f" % cer|float}}%</dd>
+	<dt class="col-md-4">Diff</dt>
+	<dd class="col-md-8">{{diff | safe}}</dd>
+	<dt class="col-md-4">Correct</dt>
+	<dd class="col-md-8">{{correct}}</dd>
 </dl>

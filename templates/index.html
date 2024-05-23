@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="POST" action="{{ url_for('transcribe') }}">
+<form method="GET" action="{{ url_for('transcribe') }}">
     <div class="form-group">
         <label for="language">Language</label>
-        <select id="language" name="language" class="form-control">
+        <select id="language" name="language" class="form-control" onchange="updateFilters()">
             <option value="">Select</option>
             {% for language in languages %}
             <option value="{{ language }}">{{ language }}</option>
@@ -13,7 +13,7 @@
     </div>
     <div class="form-group">
         <label for="century">Century</label>
-        <select id="century" name="century" class="form-control">
+        <select id="century" name="century" class="form-control" onchange="updateFilters()">
             <option value="">Select</option>
             {% for century in centuries %}
             <option value="{{ century }}">{{ century }}</option>
@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
         <label for="script_type">Script Type</label>
-        <select id="script_type" name="script_type" class="form-control">
+        <select id="script_type" name="script_type" class="form-control" onchange="updateFilters()">
             <option value="">Select</option>
             {% for script_type in script_types %}
             <option value="{{ script_type }}">{{ script_type }}</option>
@@ -31,7 +31,7 @@
     </div>
     <div class="form-group">
         <label for="genre">Genre</label>
-        <select id="genre" name="genre" class="form-control">
+        <select id="genre" name="genre" class="form-control" onchange="updateFilters()">
             <option value="">Select</option>
             {% for genre in genres %}
             <option value="{{ genre }}">{{ genre }}</option>
@@ -40,4 +40,38 @@
     </div>
     <button type="submit" class="btn btn-primary">Start Transcribing</button>
 </form>
+<script>
+    const metadataCombinations = {{ metadata_combinations|tojson }};
+    
+    function updateFilters() {
+        const language = document.getElementById('language').value;
+        const century = document.getElementById('century').value;
+        const scriptType = document.getElementById('script_type').value;
+        const genre = document.getElementById('genre').value;
+
+        const filteredCombinations = metadataCombinations.filter(combination => {
+            return (!language || combination.language === language) &&
+                   (!century || combination.century == century) &&
+                   (!scriptType || combination.script_type === scriptType) &&
+                   (!genre || combination.genre === genre);
+        });
+        console.log(metadataCombinations)
+
+        updateOptions('language', filteredCombinations.map(c => c.language).filter((v, i, a) => a.indexOf(v) === i));
+        updateOptions('century', filteredCombinations.map(c => c.century).filter((v, i, a) => a.indexOf(v) === i));
+        updateOptions('script_type', filteredCombinations.map(c => c.script_type).filter((v, i, a) => a.indexOf(v) === i));
+        updateOptions('genre', filteredCombinations.map(c => c.genre).filter((v, i, a) => a.indexOf(v) === i));
+    }
+
+    function updateOptions(selectId, options) {
+        const select = document.getElementById(selectId);
+        const currentValue = select.value;
+        select.innerHTML = '<option value="">Select</option>' + options.map(option => `<option value="${option}">${option}</option>`).join('');
+        if (options.includes(currentValue) || (selectId==='century' && options.includes(parseInt(currentValue)))) {
+            select.value = currentValue;
+        } else {
+            select.value = '';
+        }
+    }
+</script>
 {% endblock %}

@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medieval Transcription App</title>
+    <title>CATMuS Medieval Training App</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         .keyboard-container {
             display: grid;
-            gap: 5px; /* Optional: add some gap between keys */
+            gap: 0.25em; /* Optional: add some gap between keys */
             border: 1px solid black; /* Optional: add a border for the keyboard */
-            padding: 10px; /* Optional: add some padding around the keyboard */
+            padding: .5em; /* Optional: add some padding around the keyboard */
         }
         .key {
             display: flex;
             align-items: center;
             justify-content: center;
             border: 1px solid gray; /* Optional: add a border to each key */
-            padding: 10px; /* Optional: add some padding inside each key */
+            padding: .5em; /* Optional: add some padding inside each key */
             font-size: 20px; /* Adjust the font size as needed */
             text-decoration: none; /* Remove underline from links */
             background-color: #f0f0f0; /* Light gray background for key appearance */
@@ -33,12 +33,36 @@
             background-color: #f8d7da;
             color: #721c24;
         }
+        .banner {
+          display: flex;
+          align-items: center;
+          padding: 20px;
+          background-color: #f8f9fa;
+        }
+        .banner img {
+          max-height: 100px;
+          margin-right: 20px;
+        }
+        .banner a {
+          margin-left: 20px;
+          font-size: 1.2rem;
+          text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="my-4 text-center">Medieval Transcription Practice</h1>
+        <div class="banner">
+            <img src="{{url_for('static', filename='logo.png')}}" alt="CATMuS Logo">
+            <h1 class="flex-grow-1">CATMuS Medieval Training App</h1>
+            <a href="{{url_for('index')}}" class="btn btn-outline-primary">Home</a>
+            <a href="https://catmus-guidelines.github.io/" class="btn btn-outline-primary">Guidelines</a>
+            <a href="https://discord.gg/J38xgNEsGk" class="btn btn-outline-primary">Discord</a>
+        </div>
         {% block content %}{% endblock %}
+        <p>
+            <a href="https://github.com/catmus-guidelines/learning-app" class="btn btn-outline-primary">Source</a>
+        </p>
     </div>
 </body>
 </html>
