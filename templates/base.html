@@ -6,29 +6,50 @@
     <title>CATMuS Medieval Training App</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
+
+        @font-face {
+            font-family: 'Junicode';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Junicode'), url('{{url_for("static", filename="junicode.woff2")}}') format('woff');
+        }
+
+        body {
+            font-family: 'Junicode', sans-serif!important;
+        }
         .keyboard-container {
-            display: grid;
-            gap: 0.25em; /* Optional: add some gap between keys */
-            border: 1px solid black; /* Optional: add a border for the keyboard */
-            padding: .5em; /* Optional: add some padding around the keyboard */
+          display: flex;
+          flex-wrap: wrap;
+          max-width: 100%; /* Adjust the width as needed */
+          margin: 0 auto;
+          border: 0.0625em solid #ccc;
+          padding: 0.625em;
+          border-radius: 0.625em;
+          background-color: #f0f0f0;
         }
+
         .key {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid gray; /* Optional: add a border to each key */
-            padding: .5em; /* Optional: add some padding inside each key */
-            font-size: 20px; /* Adjust the font size as needed */
-            text-decoration: none; /* Remove underline from links */
-            background-color: #f0f0f0; /* Light gray background for key appearance */
-            color: black; /* Black text color */
-            cursor: pointer; /* Change cursor to pointer to indicate clickable keys */
-            border-radius: 5px; /* Optional: add rounded corners for a key-like appearance */
-            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Optional: add a subtle shadow for a 3D effect */
+          display: inline-block;
+          width: 2.5em; /* Adjust the key width as needed */
+          height: 2.5em; /* Adjust the key height as needed */
+          margin: 0.3125em;
+          border: 0.0625em solid #ccc;
+          border-radius: 0.3125em;
+          background-color: #fff;
+          text-align: center;
+          line-height: 2.5em; /* Same as the height to center the text */
+          font-size: 1em; /* Adjust the font size as needed */
+          text-decoration: none;
+          color: #333;
+          box-shadow: 0 0.125em 0.3125em rgba(0, 0, 0, 0.1);
+          transition: background-color 0.2s, box-shadow 0.2s;
         }
+
         .key:hover {
-            background-color: #e0e0e0; /* Slightly darker background on hover */
+          background-color: #e0e0e0;
+          box-shadow: 0 0.25em 0.625em rgba(0, 0, 0, 0.2);
         }
+
         .close-button {
             background-color: #f8d7da;
             color: #721c24;

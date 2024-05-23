@@ -92,13 +92,18 @@ document.addEventListener('DOMContentLoaded', function() {
             key.href = '#';
 
             // Position the key in the grid
-            key.style.gridRowStart = row + 1;
-            key.style.gridColumnStart = column + 1;
+            // key.style.gridRowStart = row + 1;
+            // key.style.gridColumnStart = column + 1;
 
             // Add click event to append the character to the text input
             key.addEventListener('click', (event) => {
                 event.preventDefault(); // Prevent the default anchor behavior
-                textInput.value += character;
+                let value = textInput.value + character;
+                textInput.focus(); // Set focus on the input element
+
+                // Move the cursor to the end of the input value
+                textInput.value = ''; // Temporarily clear the value
+                textInput.value = value; // Set it back to the original value
             });
 
             // Add the key to the keyboard container
@@ -109,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const rect = textInput.getBoundingClientRect();
             keyboardContainer.style.top = `${rect.bottom + window.scrollY}px`;
             keyboardContainer.style.left = `${rect.left + window.scrollX}px`;
-            keyboardContainer.style.display = 'grid';
+            keyboardContainer.style.display = 'flex';
         });
 
 
