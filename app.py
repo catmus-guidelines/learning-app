@@ -16,12 +16,6 @@ def load_data():
     dataset = load_dataset("CATMuS/medieval-samples", split='train+validation+test').to_pandas()
     return dataset
 
-# Load the special characters JSON
-def load_special_characters(json_file):
-    with open(json_file, 'r', encoding='utf-8') as file:
-        data = json.load(file)
-    return data["characters"]
-
 # Extract unique values for filter lists
 def get_unique_values(dataset, column_name):
     return sorted(list(dataset[column_name].unique()))
@@ -60,7 +54,6 @@ def format_differences(transcription, reference):
 
 # Load the dataset and special characters
 dataset = load_data()
-special_characters = load_special_characters('/home/tclerice/Downloads/catmus-combining.json')
 
 # Get unique values for filters
 languages = get_unique_values(dataset, 'language')
